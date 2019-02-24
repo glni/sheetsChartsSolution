@@ -10,8 +10,6 @@ $(document).ready(function () {
 
     function drawPieChart(HTMLElementId){
 
-        var jsonData;
-
         var chartData = {
             "cols": [
                 {"id":"","label":"","type":"string"},
@@ -26,29 +24,28 @@ $(document).ready(function () {
             dataType: "json",
             async: false
         }).done(function (data) {
-            jsonData = data;
+
+            $.each(data.values, function (k, v) {
+                chartData.rows.push(
+                    {"c":[{"v":v[0]}, {"v": v[1]}]});
+            });
+
+            // Create our data table out of JSON data loaded from server.
+            var data = new google.visualization.DataTable(chartData);
+
+            // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.PieChart(document.getElementById(HTMLElementId));
+            var options = {
+                width: 400,
+                height: 240
+            };
+
+            chart.draw(data, options);
+
         });
-
-        $.each(jsonData.values, function (k, v) {
-            chartData.rows.push(
-                {"c":[{"v":v[0]}, {"v": v[1]}]});
-        });
-
-        // Create our data table out of JSON data loaded from server.
-        var data = new google.visualization.DataTable(chartData);
-
-        // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.PieChart(document.getElementById(HTMLElementId));
-        var options = {
-            width: 400,
-            height: 240
-        };
-        chart.draw(data, options);
     }
 
     function drawLineChart(HTMLElementId){
-
-        var jsonData;
 
         var chartData = {
             "cols": [
@@ -65,24 +62,24 @@ $(document).ready(function () {
             dataType: "json",
             async: false
         }).done(function (data) {
-            jsonData = data;
+
+            $.each(data.values, function (k, v) {
+                chartData.rows.push(
+                    {"c":[{"v":v[0]}, {"v": v[1]}, {"v": v[2]}]});
+            });
+
+            var data = new google.visualization.DataTable(chartData);
+
+            var chart = new google.visualization.LineChart(document.getElementById(HTMLElementId));
+            var options = {
+                title: 'Likes development',
+                curveType: 'function',
+                legend: { position: 'bottom' }
+            };
+
+            chart.draw(data, options);
+
         });
-
-        $.each(jsonData.values, function (k, v) {
-            chartData.rows.push(
-                {"c":[{"v":v[0]}, {"v": v[1]}, {"v": v[2]}]});
-        });
-
-
-        var data = new google.visualization.DataTable(chartData);
-
-        var chart = new google.visualization.LineChart(document.getElementById(HTMLElementId));
-        var options = {
-            title: 'Likes development',
-            curveType: 'function',
-            legend: { position: 'bottom' }
-        };
-        chart.draw(data, options);
     }
 
 });
