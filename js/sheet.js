@@ -21,13 +21,13 @@ $(document).ready(function () {
 
         $.ajax({
             url: "https://sheets.googleapis.com/v4/spreadsheets/1HbwSWnXwlbeHviTTF0YmDvROMyQ11DBHC1T00JK_FgA/values/'Ark1'!A1%3AC2?majorDimension=COLUMNS&valueRenderOption=FORMULA&key=AIzaSyAwZUBlSKTadTWUnRHKz9tMu9ruZkYnPTw",
-            dataType: "json",
-            async: false
+            dataType: "json"
         }).done(function (data) {
 
             $.each(data.values, function (k, v) {
                 chartData.rows.push(
-                    {"c":[{"v":v[0]}, {"v": v[1]}]});
+                    {"c":[{"v":v[0]}, {"v": v[1]}]}
+                );
             });
 
             // Create our data table out of JSON data loaded from server.
@@ -59,13 +59,15 @@ $(document).ready(function () {
 
         $.ajax({
             url: "https://sheets.googleapis.com/v4/spreadsheets/1HbwSWnXwlbeHviTTF0YmDvROMyQ11DBHC1T00JK_FgA/values/'Ark2'!A2%3AC6?majorDimension=ROWS&valueRenderOption=FORMULA&key=AIzaSyAwZUBlSKTadTWUnRHKz9tMu9ruZkYnPTw",
-            dataType: "json",
-            async: false
+            dataType: "json"
         }).done(function (data) {
+
+            console.log(data);
 
             $.each(data.values, function (k, v) {
                 chartData.rows.push(
-                    {"c":[{"v":v[0]}, {"v": v[1]}, {"v": v[2]}]});
+                    {"c":[{"v":v[0]}, {"v": v[1]}, {"v": v[2]}]}
+                );
             });
 
             var data = new google.visualization.DataTable(chartData);
