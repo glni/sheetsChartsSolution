@@ -6,6 +6,7 @@ $(document).ready(function () {
     function initialize() {
         drawPieChart("pieChart");
         drawLineChart("lineChart");
+        drawColumnChart("columnChart");
     }
 
     function drawPieChart(HTMLElementId){
@@ -26,7 +27,10 @@ $(document).ready(function () {
 
             $.each(data.values, function (k, v) {
                 chartData.rows.push(
-                    {"c":[{"v":v[0]}, {"v": v[1]}]}
+                    {"c":[
+                            {"v":v[0]},
+                            {"v": v[1]}
+                        ]}
                 );
             });
 
@@ -51,22 +55,28 @@ $(document).ready(function () {
             "cols": [
                 {"id":"","label":"Week","type":"string"},
                 {"id":"","label":"Facebook","type":"number"},
-                {"id":"","label":"Instagram","type":"number"}
+                {"id":"","label":"Instagram","type":"number"},
+                {"id":"","label":"LinkedIn","type":"number"}
             ],
             "rows": [
             ]
         };
 
         $.ajax({
-            url: "https://sheets.googleapis.com/v4/spreadsheets/1HbwSWnXwlbeHviTTF0YmDvROMyQ11DBHC1T00JK_FgA/values/'Ark2'!A2%3AC6?majorDimension=ROWS&valueRenderOption=FORMULA&key=AIzaSyAwZUBlSKTadTWUnRHKz9tMu9ruZkYnPTw",
+            url: "https://sheets.googleapis.com/v4/spreadsheets/1HbwSWnXwlbeHviTTF0YmDvROMyQ11DBHC1T00JK_FgA/values/'Ark2'!A2%3AD6?majorDimension=ROWS&valueRenderOption=FORMULA&key=AIzaSyAwZUBlSKTadTWUnRHKz9tMu9ruZkYnPTw",
             dataType: "json"
         }).done(function (data) {
 
-            console.log(data);
+            //console.log(data);
 
             $.each(data.values, function (k, v) {
                 chartData.rows.push(
-                    {"c":[{"v":v[0]}, {"v": v[1]}, {"v": v[2]}]}
+                    {"c":[
+                            {"v":v[0]},
+                            {"v": v[1]},
+                            {"v": v[2]},
+                            {"v": v[3]}
+                        ]}
                 );
             });
 
@@ -83,5 +93,52 @@ $(document).ready(function () {
 
         });
     }
+
+    function drawColumnChart(HTMLElementId){
+
+        var chartData = {
+            "cols": [
+                {"id":"","label":"A","type":"string"},
+                {"id":"","label":"Antal","type":"number"},
+                {"id":"","role":"style","type":"string"},
+                {"id":"","role":"annotation","type":"string"}
+            ],
+            "rows": [
+            ]
+        };
+
+        $.ajax({
+            url: "https://sheets.googleapis.com/v4/spreadsheets/1HbwSWnXwlbeHviTTF0YmDvROMyQ11DBHC1T00JK_FgA/values/'Ark3'!A2%3AD4?majorDimension=ROWS&valueRenderOption=FORMULA&key=AIzaSyAwZUBlSKTadTWUnRHKz9tMu9ruZkYnPTw",
+            dataType: "json"
+        }).done(function (data) {
+
+            console.log(data);
+
+            $.each(data.values, function (k, v) {
+                chartData.rows.push(
+                    {"c":[
+                            {"v":v[0]},
+                            {"v": v[1]},
+                            {"v": v[2]},
+                            {"v": v[3]}
+                        ]}
+                );
+            });
+
+            var data = new google.visualization.DataTable(chartData);
+            var options = {
+                title: "SoMe shares",
+                width: 600,
+                height: 400,
+                bar: {groupWidth: "95%"},
+                legend: { position: "none" },
+            };
+            var chart = new google.visualization.ColumnChart(document.getElementById(HTMLElementId));
+            chart.draw(data, options);
+
+        });
+    }
+
+
 
 });
